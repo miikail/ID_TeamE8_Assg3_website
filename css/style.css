@@ -1,0 +1,18 @@
+header {
+  position: relative;
+  
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  border: 2px solid #111;
+}
+
+header li {
+  position: relative;
+  top: 20px;
+  
+  display: inline;
+
+  padding: 0 20px 0 20px;
+}
