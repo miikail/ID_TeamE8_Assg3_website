@@ -1,12 +1,25 @@
-// var word = ["Punch", "Kick", "Knee", "Elbow"];
-
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-let wordID = document.getElementById("word");
+var getHint;            // Word getHint
+var word;               // Selected word
+var guess;              // Guesss
+var guesses = [ ];      // Stored guesses
+var lives;              // Lives
+var counter;            // Count correct guesses
+var space;              // Number of spaces in word '-'
 
-// ~~~ function to get a random word ~~~
+// Get elements
+var showLives = document.getElementById("mylives");
+var getHint = document.getElementById("hint");
+var showClue = document.getElementById("clue");
+
+let wordID = document.getElementById("word"); // display word
+let ansID = document.getElementById("wordAns"); // hidden answer
+
+
+// ~~~~~~~~~~ function to get a random word ~~~~~~~~~~
 function getWord() {
 
   url = 'https://random-word-api.herokuapp.com/word?number=1';
@@ -21,9 +34,10 @@ function getWord() {
   })
 }
 
-// ~~~ function to get the meanings of a word ~~~
-function getMeaning(word) {
-  
+
+// ~~~~~~~~~~ function to get the meanings of a word ~~~~~~~~~~
+function getMeaning(word, type) {
+
   url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/';
 
   fetch(url + word)
@@ -43,18 +57,22 @@ function getMeaning(word) {
     {
       for (let i = 0; i < data.length; i++)
       {
+        var meanings = data[i].meanings;
 
         // if word is found and there is meaning in the dictionary, display meanings
-        if (data[i].meanings.length != 0)
-        {
-          console.log("Meaning:", data[i].meanings[0].definitions[0].definition);
+        if (meanings.length != 0)
+        {        
+          var definition = meanings[0].definitions[0].definition;
+          var synonyms = data[i].meanings[0].definitions[0].synonyms;
+         
+          console.log("Meaning:", definition);
 
           // if synonyms of word found, display synonyms
-          if (data[i].meanings[0].definitions[0].synonyms != null)
+          if (synonyms != null)
           {
-            for (let j = 0; j < data[i].meanings[0].definitions[0].synonyms.length; j++)
+            for (let j = 0; j < synonyms.length; j++)
             {
-              console.log("Synonyms:", data[i].meanings[0].definitions[0].synonyms[j]);
+              console.log("Synonyms:", synonyms[j]);
             }
           }
 
@@ -64,7 +82,16 @@ function getMeaning(word) {
             console.log("Synonyms: Sorry... No synonyms found...");
           }
 
-          wordID.innerHTML = randWord; 
+          if (type == "hint")
+          {
+            console.log(definition);
+            showClue.innerHTML = "Clue: - " +  definition; // display meaning as clues
+          }
+
+          hide = HideWord(word);
+
+          ansID.innerHTML = hide[0]   // hidden answer
+          wordID.innerHTML = hide[1]; // unsolved, word is white to blend in background
         }
 
         // if word is found but no meaning, return to take new word
@@ -79,22 +106,17 @@ function getMeaning(word) {
 }
 
 
-/*
-var categories;         // Array of topics
-var chosenCategory;     // Selected catagory
-var getHint;            // Word getHint
-var word;               // Selected word
-var guess;              // Geuss
-var guesses = [ ];      // Stored geusses
-var lives;              // Lives
-var counter;            // Count correct geusses
-var space;              // Number of spaces in word '-'
+// ~~~~~~~~~~ hide unsolved word ~~~~~~~~~~
+function HideWord(orig) {
+  hidden = "";
+  for (let i = 0; i < orig.length; i++)
+  {
+    hidden += "*";
+  }
 
-// Get elements
-var showLives = document.getElementById("mylives");
-var showCategory = document.getElementById("scategory");
-var getHint = document.getElementById("hint");
-var showClue = document.getElementById("clue");
+  return [orig, hidden];
+}
+
 
 // create alphabet ul
 var buttons = function () {
@@ -112,21 +134,8 @@ var buttons = function () {
   }
 }
 
-// Select Catagory
-var selectCat = function () {
-
-  
-  if (chosenCategory === categories[0]) {
-    wordName.innerHTML = "The Chosen Category Is Premier League Football Teams";
-  } else if (chosenCategory === categories[1]) {
-    wordName.innerHTML = "The Chosen Category Is Films";
-  } else if (chosenCategory === categories[2]) {
-    wordName.innerHTML = "The Chosen Category Is Cities";
-  }
-}
-
 // Create guesses ul
-result = function () {
+var result = function () {
   wordHolder = document.getElementById('hold');
   correct = document.createElement('ul');
 
@@ -146,14 +155,14 @@ result = function () {
     correct.appendChild(guess);
   }
 }
-  
+
 // Show lives
 comments = function () {
   showLives.innerHTML = "You have " + lives + " lives";
   if (lives < 1) {
     showLives.innerHTML = "Game Over";
   }
-  for (var i = 0; i < geusses.length; i++) {
+  for (var i = 0; i < guesses.length; i++) {
     if (counter + space === guesses.length) {
       showLives.innerHTML = "You Win!";
     }
@@ -163,16 +172,16 @@ comments = function () {
 // OnClick Function
 check = function () {
   list.onclick = function () {
-    var geuss = (this.innerHTML);
+    var guess = (this.innerHTML);
     this.setAttribute("class", "active");
     this.onclick = null;
     for (var i = 0; i < word.length; i++) {
-      if (word[i] === geuss) {
-        geusses[i].innerHTML = geuss;
+      if (word[i] === guess) {
+        guesses[i].innerHTML = guess;
         counter += 1;
       } 
     }
-    var j = (word.indexOf(geuss));
+    var j = (word.indexOf(guess));
     if (j === -1) {
       lives -= 1;
       comments();
@@ -185,27 +194,28 @@ check = function () {
 
 // Play
 play = function () {
-  categories = [
-      ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
-      ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-      ["manchester", "milan", "madrid", "amsterdam", "prague"]
-  ];
-
-  chosenCategory = categories[Math.floor(Math.random() * categories.length)];
-  word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+  word = document.getElementById("wordAns").innerHTML;
   word = word.replace(/\s/g, "-");
   console.log(word);
   buttons();
 
-  geusses = [ ];
+  guesses = [ ];
   lives = 10;
   counter = 0;
   space = 0;
   result();
   comments();
-  selectCat();
-  canvas();
 }
 
   play();
+
+/*
 */
+
+// Hint
+
+hint.onclick = function() {
+  var word = document.getElementById("wordAns").innerHTML;
+  console.log("HINT:", word);
+  hints = getMeaning(word, 'hint');
+};

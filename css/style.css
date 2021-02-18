@@ -68,33 +68,50 @@ section .container {
   border: 2px solid #111;
 }
 
-section .container #startBut {
+section a {
   padding: 10px;
   margin-left: 200px;
   margin-right: 200px;
+  
+  color: #ffffff;
+  text-decoration: none;
 
   background-color: #00ac509f;
   border: 2px solid #111;
   border-radius: 50px;
+
 }
 
-section .container #startBut :hover{
-  font-weight: bold;
+section a:hover {
+  background-color: #008d42;
+}
+
+section #wordAns {
+  visibility: hidden;
+}
+
+section .unsolved {
+  background-color: #006400;
+  border: 2px solid #111;
+  text-transform: capitalize;
   
-  color: #ffffff;
-  text-decoration: none;
 }
 
-/*
+section #solved {
+  text-transform: capitalize;
+}
+
 .wrapper{
-  width:100%;
-  margin:0 auto;
+  display: flex;
+  flex-direction: column;
+  
+  padding: 10px;
+  border: 2px solid rgb(255, 0, 0);
 }
 
 #alphabet {
   margin:15px auto;
   padding:0;
-  max-width:900px;
 }
 
 #alphabet li {
@@ -107,13 +124,19 @@ section .container #startBut :hover{
   background: #ffffff;
   color: #3eaa6fb9;
   cursor:pointer;
-  border: solid 1px #ffffff;
+  border: solid 1px #3eaa6fb9;
+  border-radius: 5px;
 }
 
-#alphabet li :hover{
+#alphabet li:hover{
   background: #3eaa6fb9;
-  border: solid 1px #ffffff;
+  border: solid 1px #1b5837b9;
   color: #ffffff;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
 }
 
 #my-word {
@@ -130,4 +153,4 @@ section .container #startBut :hover{
   display: inline-block;
   padding: 0 10px;
   font-size:1.6em;
-}*/
+}
