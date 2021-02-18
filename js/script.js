@@ -4,50 +4,52 @@ var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-// let selWord = word[Math.floor(Math.random() * word.length)]
-// console.log(selWord);
-
 let wordID = document.getElementById("word");
 
+// ~~~ function to get a random word ~~~
 function getWord() {
 
-  var randWord;
   url = 'https://random-word-api.herokuapp.com/word?number=1';
 
   fetch(url)
   .then(response => response.json())
   .then(function(data) {
-    //console.log("word: ", data);
     
     randWord = data[0];
     
-    wordID.innerHTML = randWord; 
-    
     getMeaning(randWord);
-    
   })
 }
 
+// ~~~ function to get the meanings of a word ~~~
 function getMeaning(word) {
-
-url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/';
+  
+  url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/';
 
   fetch(url + word)
   .then(response => response.json())
   .then(function(data) {
+    console.log(data);
 
+    // if the word is not found in the dictionary, display error message.
     if (data.title == "No Definitions Found")
     {
-      console.log(data.message);
+      console.log(data.message + "\ntrying again...");
+      getWord();
     }
+
+    // else display the results
     else
     {
       for (let i = 0; i < data.length; i++)
       {
+
+        // if word is found and there is meaning in the dictionary, display meanings
         if (data[i].meanings.length != 0)
         {
           console.log("Meaning:", data[i].meanings[0].definitions[0].definition);
 
+          // if synonyms of word found, display synonyms
           if (data[i].meanings[0].definitions[0].synonyms != null)
           {
             for (let j = 0; j < data[i].meanings[0].definitions[0].synonyms.length; j++)
@@ -55,15 +57,28 @@ url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/';
               console.log("Synonyms:", data[i].meanings[0].definitions[0].synonyms[j]);
             }
           }
+
+          // if no synonyms found, display error message
           else
           {
             console.log("Synonyms: Sorry... No synonyms found...");
           }
+
+          wordID.innerHTML = randWord; 
+        }
+
+        // if word is found but no meaning, return to take new word
+        else
+        {
+          console.log("no meaning... trying again...");
+          getWord();
         }
       }
     }
   })
 }
+
+
 /*
 var categories;         // Array of topics
 var chosenCategory;     // Selected catagory
