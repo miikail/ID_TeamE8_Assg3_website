@@ -1,18 +1,69 @@
-var word = ["Punch", "Kick", "Knee", "Elbow"];
+// var word = ["Punch", "Kick", "Knee", "Elbow"];
 
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-let selWord = word[Math.floor(Math.random() * word.length)]
-console.log(selWord);
+// let selWord = word[Math.floor(Math.random() * word.length)]
+// console.log(selWord);
 
-let getCat = document.getElementById("categoryName");
-getCat.innerHTML += selWord; 
+let wordID = document.getElementById("word");
 
+function getWord() {
 
+  var randWord;
+  url = 'https://random-word-api.herokuapp.com/word?number=1';
 
+  fetch(url)
+  .then(response => response.json())
+  .then(function(data) {
+    //console.log("word: ", data);
+    
+    randWord = data[0];
+    
+    wordID.innerHTML = randWord; 
+    
+    getMeaning(randWord);
+    
+  })
+}
 
+function getMeaning(word) {
+
+url = 'https://api.dictionaryapi.dev/api/v2/entries/en_US/';
+
+  fetch(url + word)
+  .then(response => response.json())
+  .then(function(data) {
+
+    if (data.title == "No Definitions Found")
+    {
+      console.log(data.message);
+    }
+    else
+    {
+      for (let i = 0; i < data.length; i++)
+      {
+        if (data[i].meanings.length != 0)
+        {
+          console.log("Meaning:", data[i].meanings[0].definitions[0].definition);
+
+          if (data[i].meanings[0].definitions[0].synonyms != null)
+          {
+            for (let j = 0; j < data[i].meanings[0].definitions[0].synonyms.length; j++)
+            {
+              console.log("Synonyms:", data[i].meanings[0].definitions[0].synonyms[j]);
+            }
+          }
+          else
+          {
+            console.log("Synonyms: Sorry... No synonyms found...");
+          }
+        }
+      }
+    }
+  })
+}
 /*
 var categories;         // Array of topics
 var chosenCategory;     // Selected catagory
@@ -51,11 +102,11 @@ var selectCat = function () {
 
   
   if (chosenCategory === categories[0]) {
-    categoryName.innerHTML = "The Chosen Category Is Premier League Football Teams";
+    wordName.innerHTML = "The Chosen Category Is Premier League Football Teams";
   } else if (chosenCategory === categories[1]) {
-    categoryName.innerHTML = "The Chosen Category Is Films";
+    wordName.innerHTML = "The Chosen Category Is Films";
   } else if (chosenCategory === categories[2]) {
-    categoryName.innerHTML = "The Chosen Category Is Cities";
+    wordName.innerHTML = "The Chosen Category Is Cities";
   }
 }
 
