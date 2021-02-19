@@ -101,6 +101,8 @@ function getMeaning(word, type) {
 
             console.log("ANSWER:", hide[0]);
             ansID.innerHTML = hide[0]   // hidden answer
+
+            play();
           }
         }
 
@@ -231,12 +233,6 @@ var check = function () {
   }
 }
 
-function startGame() {
-  
-  getWord();
-  play();
-}
-
 // Play
 var play = function () {
   word = document.getElementById("wordAns").innerHTML;
@@ -267,5 +263,5 @@ document.getElementById('newGame').onclick = function() {
   }
   freshStart = false;
   document.getElementById("newGame").innerHTML = "New Game";
-  startGame();
+  getWord();
 }
