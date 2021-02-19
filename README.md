@@ -35,3 +35,5 @@ This is an app created for anyone who wants to spend their time for fun but also
 - The photo used in the front page was obtained from PR News at https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.prdaily.com%2F49-unbeatable-words-for-the-game-hangman&psig=AOvVaw3UoUdneYUgDZS8S5nG1RI7&ust=1613833350486000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKiki_Kb9u4CFQAAAAAdAAAAABAE
 
 GitHub Pages link: https://miikail.github.io/ID_TeamE8_Assg3_website/
+
+Pitch link: https://drive.google.com/drive/folders/1skRzY3q6b4w4wnA1k70wAkoEaKWQ1vrQ?usp=sharing
