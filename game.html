@@ -30,7 +30,7 @@
     <!-- Body -->
     <div class="container">
       <div class="box">
-      <h1>Hangman</h1>
+      <h1>HangWords</h1>
       </div>
 
       <div class="box">
@@ -41,13 +41,19 @@
     <div class="wrapper">
       <div id="buttons">
       </div>
+      
+      <div id="pressed">
+      </div>
 
-      <p id="wordName"> Word is: <b id="word" class="unsolved"></b></p>
-      <p id="wordAns"></p>
-      <a id="startBut" onclick="getWord()">Start Game</a>
+      <div class="container">
+        <a id="newGame">Start Game</a>
+        <p id="wordName"> Word is: <b id="syn"></b></p>
+        <p id="wordAns"></p>  
+      </div>
 
       <div id="hold">
       </div>
+      
       <p id="mylives"></p>
       <p id="clue">Clue -</p>
 

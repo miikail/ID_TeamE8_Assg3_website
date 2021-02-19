@@ -18,6 +18,7 @@ var showClue = document.getElementById("clue");
 let wordID = document.getElementById("word"); // display word
 let ansID = document.getElementById("wordAns"); // hidden answer
 
+var freshStart = true;
 
 // ~~~~~~~~~~ function to get a random word ~~~~~~~~~~
 function getWord() {
@@ -43,12 +44,12 @@ function getMeaning(word, type) {
   fetch(url + word)
   .then(response => response.json())
   .then(function(data) {
-    console.log(data);
+    //console.log(data);
 
     // if the word is not found in the dictionary, display error message.
     if (data.title == "No Definitions Found")
     {
-      console.log(data.message + "\ntrying again...");
+      console.log("No definitions found... \ntrying again...");
       getWord();
     }
 
@@ -72,26 +73,37 @@ function getMeaning(word, type) {
           {
             for (let j = 0; j < synonyms.length; j++)
             {
-              console.log("Synonyms:", synonyms[j]);
+              document.getElementById("syn").innerHTML += synonyms[j] + ", ";
             }
+            
           }
-
           // if no synonyms found, display error message
           else
           {
             console.log("Synonyms: Sorry... No synonyms found...");
+            getWord();
           }
 
           if (type == "hint")
           {
             console.log(definition);
             showClue.innerHTML = "Clue: - " +  definition; // display meaning as clues
+
+            hide = HideWord(word);
+  
+            console.log("ANSWER:", hide[0]);
+            ansID.innerHTML = hide[0]   // hidden answer
+            //wordID.innerHTML = hide[1]; // unsolved, word is white to blend in background
           }
+          else
+          {
+            hide = HideWord(word);
 
-          hide = HideWord(word);
+            console.log("ANSWER:", hide[0]);
+            ansID.innerHTML = hide[0]   // hidden answer
 
-          ansID.innerHTML = hide[0]   // hidden answer
-          wordID.innerHTML = hide[1]; // unsolved, word is white to blend in background
+            play();
+          }
         }
 
         // if word is found but no meaning, return to take new word
@@ -135,7 +147,8 @@ var buttons = function () {
 }
 
 // Create guesses ul
-var result = function () {
+result = function () {
+  console.log("CALLED RESULT");
   wordHolder = document.getElementById('hold');
   correct = document.createElement('ul');
 
@@ -143,6 +156,7 @@ var result = function () {
     correct.setAttribute('id', 'my-word');
     guess = document.createElement('li');
     guess.setAttribute('class', 'guess');
+
     if (word[i] === "-") {
       guess.innerHTML = "-";
       space = 1;
@@ -157,12 +171,24 @@ var result = function () {
 }
 
 // Show lives
-comments = function () {
+var comments = function () {
   showLives.innerHTML = "You have " + lives + " lives";
+  
+  var heart = "";
+  for (let i = 0; i < lives; i++)
+  {
+    heart += "💔 ";
+  }
+  console.log("Heart: ",heart);
+  showLives.innerHTML = "<b>Your Lives: " + heart + "</b>";
+
   if (lives < 1) {
     showLives.innerHTML = "Game Over";
+    guesses.innerHTML = ansID;
   }
   for (var i = 0; i < guesses.length; i++) {
+
+    console.log("PLEASE WORK:", counter, space, guesses.length);
     if (counter + space === guesses.length) {
       showLives.innerHTML = "You Win!";
     }
@@ -170,22 +196,37 @@ comments = function () {
 }
 
 // OnClick Function
-check = function () {
+var check = function () {
+
   list.onclick = function () {
+    console.log("Click Check:");
+
+    var word = ansID.innerHTML;
     var guess = (this.innerHTML);
+
+    console.log("guess:",guess, "\t", guess.length);
+
+    console.log("word:", word, "\t", word.length);
+
     this.setAttribute("class", "active");
     this.onclick = null;
+
     for (var i = 0; i < word.length; i++) {
       if (word[i] === guess) {
+
         guesses[i].innerHTML = guess;
+        
         counter += 1;
+
+        console.log("Guesses:", guesses);
+
+        console.log("Guess:", guess);
       } 
     }
     var j = (word.indexOf(guess));
     if (j === -1) {
       lives -= 1;
       comments();
-      animate();
     } else {
       comments();
     }
@@ -193,10 +234,9 @@ check = function () {
 }
 
 // Play
-play = function () {
+var play = function () {
   word = document.getElementById("wordAns").innerHTML;
   word = word.replace(/\s/g, "-");
-  console.log(word);
   buttons();
 
   guesses = [ ];
@@ -207,15 +247,21 @@ play = function () {
   comments();
 }
 
-  play();
-
-/*
-*/
-
 // Hint
-
 hint.onclick = function() {
   var word = document.getElementById("wordAns").innerHTML;
-  console.log("HINT:", word);
   hints = getMeaning(word, 'hint');
 };
+
+// Reset
+document.getElementById('newGame').onclick = function() {
+  console.log(freshStart);
+  if(freshStart != true)
+  {
+    location.reload()
+    return false;
+  }
+  freshStart = false;
+  document.getElementById("newGame").innerHTML = "New Game";
+  getWord();
+}

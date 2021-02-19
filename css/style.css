@@ -8,6 +8,11 @@ body {
   text-align:center;
 
   background-size: 100%;
+  background: url("../img/hangword_wallpaper.png");
+}
+
+header, .container {
+  background-color: #116c8885;
 }
 
 header {
@@ -68,6 +73,10 @@ section .container {
   border: 2px solid #111;
 }
 
+section .wrapper .container {
+  border-radius: 20px;
+}
+
 section a {
   padding: 10px;
   margin-left: 200px;
@@ -91,8 +100,6 @@ section #wordAns {
 }
 
 section .unsolved {
-  background-color: #006400;
-  border: 2px solid #111;
   text-transform: capitalize;
   
 }
@@ -106,7 +113,7 @@ section #solved {
   flex-direction: column;
   
   padding: 10px;
-  border: 2px solid rgb(255, 0, 0);
+  background: #b288ff6e;
 }
 
 #alphabet {
