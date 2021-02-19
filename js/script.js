@@ -186,11 +186,12 @@ var comments = function () {
   if (lives < 1) {
     showLives.innerHTML = "Game Over";
     started = false;
-    guesses.innerHTML = ansID;
+
+    console.log();
+    document.getElementById("showAns").innerHTML = "Answer is: <b>'" + ansID.innerHTML + "'</b>"
   }
   for (var i = 0; i < guesses.length; i++) {
 
-    console.log("PLEASE WORK:", counter, space, guesses.length);
     if (counter + space === guesses.length) {
       showLives.innerHTML = "You Win!";
       started = false;

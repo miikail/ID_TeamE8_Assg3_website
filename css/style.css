@@ -95,12 +95,7 @@ section #wordAns {
   visibility: hidden;
 }
 
-section .unsolved {
-  text-transform: capitalize;
-  
-}
-
-section #solved {
+section #showAns {
   text-transform: capitalize;
 }
 
