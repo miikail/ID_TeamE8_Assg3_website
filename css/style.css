@@ -8,10 +8,11 @@ body {
   text-align:center;
 
   background-size: 100%;
-  background: url("../img/hangword_wallpaper.png");
+  background: #b288ff6e;
+  /*background: url("../img/hangword_wallpaper.png");*/
 }
 
-header, .container {
+.container {
   background-color: #116c8885;
 }
 
@@ -39,6 +40,10 @@ nav div ul li {
   padding-bottom: 40px;
 }
 
+.content-section p {
+  padding-top: 20px;
+}
+
 .container-md {
   background-color: lightsteelblue;
   padding-left: 10%;
@@ -61,6 +66,11 @@ section .container {
 
 section .wrapper .container {
   border-radius: 20px;
+}
+
+.container a {
+  min-width: 100px;
+  justify-content: center;
 }
 
 section a {
@@ -99,7 +109,6 @@ section #solved {
   flex-direction: column;
   
   padding: 10px;
-  background: #b288ff6e;
 }
 
 #alphabet {

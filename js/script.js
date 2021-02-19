@@ -9,6 +9,7 @@ var guesses = [ ];      // Stored guesses
 var lives;              // Lives
 var counter;            // Count correct guesses
 var space;              // Number of spaces in word '-'
+var started = false;    // If the game has or not started
 
 // Get elements
 var showLives = document.getElementById("mylives");
@@ -184,6 +185,7 @@ var comments = function () {
 
   if (lives < 1) {
     showLives.innerHTML = "Game Over";
+    started = false;
     guesses.innerHTML = ansID;
   }
   for (var i = 0; i < guesses.length; i++) {
@@ -191,6 +193,7 @@ var comments = function () {
     console.log("PLEASE WORK:", counter, space, guesses.length);
     if (counter + space === guesses.length) {
       showLives.innerHTML = "You Win!";
+      started = false;
     }
   }
 }
@@ -235,16 +238,19 @@ var check = function () {
 
 // Play
 var play = function () {
-  word = document.getElementById("wordAns").innerHTML;
-  word = word.replace(/\s/g, "-");
-  buttons();
-
-  guesses = [ ];
-  lives = 10;
-  counter = 0;
-  space = 0;
-  result();
-  comments();
+  if(started==false){
+    started = true;
+    word = document.getElementById("wordAns").innerHTML;
+    word = word.replace(/\s/g, "-");
+    buttons();
+  
+    guesses = [ ];
+    lives = 10;
+    counter = 0;
+    space = 0;
+    result();
+    comments();
+  }
 }
 
 // Hint
